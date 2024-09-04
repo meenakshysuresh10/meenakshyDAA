@@ -1,0 +1,23 @@
+6. Sequential Search
+Given an array arr of positive integers sorted in a strictly increasing order, and an integer k.
+Return the kth positive integer that is missing from this array.
+Example 1:
+Input: arr = [2,3,4,7,11], k = 5
+Output: 9
+
+def find(arr, k):
+    arr_set=set(arr)
+    missing_count=0
+    current_num=1
+    while missing_count<k:
+        if current_num not in arr_set:
+            missing_count+=1
+            if missing_count==k:
+                return current_num
+        current_num+=1
+
+arr=[2,3,4,7,11]
+k1=5
+print(find(arr1,k1))
+
+Output: 9

@@ -1,0 +1,49 @@
+8.  Given an array of strings words and a width maxWidth, format the text such that each line has exactly maxWidth characters and is fully (left and right) justified.
+You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' when necessary so that each line has exactly maxWidth characters.
+Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line does not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.
+For the last line of text, it should be left-justified, and no extra space is inserted between words.Example 1:
+Input: words = ["This", "is", "an", "example", "of", "text", "justification."], maxWidth = 16
+Output:
+[   "This    is    an",
+   "example  of text",
+   "justification.  "
+]
+
+
+def fullJustify(words,maxWidth):
+    def justify_line(line,width,is_last_line):
+        if is_last_line:
+            return ' '.join(line).ljust(width)
+        if len(line)==1:
+            return line[0].ljust(width)
+        total_spaces=width-sum(len(word) for word in line)
+        spaces_between_words=len(line)-1
+        min_spaces=total_spaces//spaces_between_words
+        extra_spaces=total_spaces%spaces_between_words
+        result=''
+        for i in range(spaces_between_words):
+            result+=line[i]+' '*(min_spaces+(1 if i < extra_spaces else 0))
+        result+=line[-1]
+        return result 
+    result, line, num_of_letters=[],[],0
+    for word in words:
+        if num_of_letters+len(word)+len(line)>maxWidth:
+            result.append(justify_line(line,maxWidth,False))
+            line, num_of_letters=[],0
+        line.append(word)
+        num_of_letters+=len(word)
+    result.append(justify_line(line, maxWidth, True))
+    return result
+words = ["This","is","an","example","of","text","justification."]
+maxWidth=16
+justified_text=fullJustify(words, maxWidth)
+for line in justified_text:
+    print(f'"{line}"')
+output:
+
+"This    is    an"
+"example  of text"
+"justification.  "
+
+
+

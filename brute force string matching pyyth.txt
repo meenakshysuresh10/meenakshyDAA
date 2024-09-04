@@ -1,0 +1,27 @@
+7.  Given two strings needle and haystack, return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+Example 1:
+Input: haystack = "sadbutsad", needle = "sad"
+Output: 0
+Explanation: "sad" occurs at index 0 and 6.
+
+
+def bruteforce(text,pattern):
+    n=len(text)
+    m=len(pattern)
+    found=False
+    for i in range(n-m+1):
+        j=0
+        while j<m and pattern[j]==text[i+j]:
+            j+=1
+        if j==m:
+            print(f"pattern is found at index:{i}")
+            found=True
+    if not found:
+        print("pattern not found")
+text="sadbutsad"
+pattern="sad"
+bruteforce(text,pattern)
+
+output:
+pattern is found at index :0
+pattern is found at index :6
