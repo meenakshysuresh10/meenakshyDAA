@@ -1,0 +1,39 @@
+15.prims Algorithm
+
+Write a program to find minimum cost spanning tree using Prim’s Algorithm
+
+import heapq
+def prims_algorithm(graph):
+    num_vertices=len(graph)
+    mst_cost=0
+    mst_edges=[]
+    visited=[False]*num_vertices
+    min_heap=[(0, 0)]
+    while min_heap:
+        cost,u=heapq.heappop(min_heap)
+        if visited[u]:
+            continue
+        visited[u]=True
+        mst_cost+=cost
+        if cost>0:
+            mst_edges.append((prev, u, cost))
+        for v,weight in enumerate(graph[u]):
+            if not visited[v] and weight>0:
+                heapq.heappush(min_heap,(weight, v))
+                prev=u
+    return mst_cost,mst_edges
+graph = [
+    [0, 2, 0, 6, 0],
+    [2, 0, 3, 8, 5],
+    [0, 3, 0, 0, 7],
+    [6, 8, 0, 0, 9],
+    [0, 5, 7, 9, 0]
+]
+mst_cost,mst_edges=prims_algorithm(graph)
+print("Minimum Cost of Spanning Tree:",mst_cost)
+print("Edges in the Minimum Spanning Tree:",mst_edges)
+
+OUTPUT:
+Minimum Cost of Spanning Tree: 16
+Edges in the Minimum Spanning Tree:[(0,1,2),(1,2,3),(1,4,5),(0,3,6)]
+
