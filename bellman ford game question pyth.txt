@@ -1,0 +1,57 @@
+13. Bellman-Ford Algorithm
+A game on an undirected graph is played by two players, Mouse and Cat, who alternate turns.
+The graph is given as follows: graph[a] is a list of all nodes b such that ab is an edge of the graph.
+The mouse starts at node 1 and goes first, the cat starts at node 2 and goes second, and there is a hole at node 0.
+During each player's turn, they must travel along one edge of the graph that meets where they are.  For example, if the Mouse is at node 1, it must travel to any node in graph[1].
+Additionally, it is not allowed for the Cat to travel to the Hole (node 0).
+Then, the game can end in three ways:
+If ever the Cat occupies the same node as the Mouse, the Cat wins.
+If ever the Mouse reaches the Hole, the Mouse wins.
+If ever a position is repeated (i.e., the players are in the same position as a previous turn, and it is the same player's turn to move), the game is a draw.
+Given a graph, and assuming both players play optimally, return
+1 if the mouse wins the game,
+2 if the cat wins the game, or
+0 if the game is a draw.
+ Example 1:
+Input: graph = [[2,5],[3],[0,4,5],[1,4,5],[2,3],[0,2,3]]
+Output: 0
+
+
+from collections import deque
+def catMouseGame(graph):
+    n = len(graph)
+    dp = [[[None for _ in range(n)] for _ in range(n)] for _ in range(2)]
+    def bfs():
+        queue = deque()
+        for mouse_pos in range(n):
+            for cat_pos in range(n):
+                if mouse_pos == 0:
+                    dp[0][mouse_pos][cat_pos] = 1
+                elif cat_pos == 0:
+                    dp[0][mouse_pos][cat_pos] = 2
+                else:
+                    dp[0][mouse_pos][cat_pos] = 0
+                    queue.append((mouse_pos, cat_pos))
+        while queue:
+            mouse_pos, cat_pos = queue.popleft()
+            if dp[1][mouse_pos][cat_pos] is not None:
+                continue
+            is_mouse_turn = (sum(dp[1][next_mouse][cat_pos] == 1 for next_mouse in graph[mouse_pos]) == len(graph[mouse_pos]) and
+                             dp[1][mouse_pos][cat_pos] != 2)
+            is_cat_turn = (sum(dp[1][mouse_pos][next_cat] == 2 for next_cat in graph[cat_pos] if next_cat != 0) == len(graph[cat_pos]) and
+                           dp[1][mouse_pos][cat_pos] != 1)
+            if is_mouse_turn:
+                dp[1][mouse_pos][cat_pos] = 1
+            elif is_cat_turn:
+                dp[1][mouse_pos][cat_pos] = 2
+            else:
+                dp[1][mouse_pos][cat_pos] = 0
+                queue.append((mouse_pos, cat_pos)
+    bfs()
+    return dp[1][1][2]
+graph = [[2,5],[3],[0,4,5],[1,4,5],[2,3],[0,2,3]]  # Example input
+print(f"Input: graph = {graph}")
+print(f"Output: {catMouseGame(graph)}")
+
+Input: graph = [[2,5],[3],[0,4,5],[1,4,5],[2,3],[0,2,3]]
+Output: 0
